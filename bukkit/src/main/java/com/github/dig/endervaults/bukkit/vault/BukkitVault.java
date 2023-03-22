@@ -141,7 +141,7 @@ public class BukkitVault implements Vault, VaultSerializable {
     }
 
     public boolean compare(Inventory inventory) {
-        return this.inventory == inventory;
+        return this.inventory.equals(inventory);
     }
 
     private ItemStack toBukkitItem(Object itemStack) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
