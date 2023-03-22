@@ -4,6 +4,7 @@ import com.github.dig.endervaults.api.vault.Vault;
 import com.github.dig.endervaults.api.vault.VaultRegistry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
 import org.javatuples.Pair;
@@ -64,5 +65,15 @@ public class BukkitVaultRegistry implements VaultRegistry {
         }
 
         return false;
+    }
+
+    public Optional<Vault> getVault(Player player, Inventory inventory) {
+        for (Vault vault: get(player.getUniqueId()).values()){
+            BukkitVault bukkitVault = (BukkitVault) vault;
+            if (bukkitVault.compare(inventory)) {
+                return Optional.of(vault);
+            }
+        }
+        return Optional.empty();
     }
 }

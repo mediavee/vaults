@@ -56,10 +56,7 @@ public class VaultCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (!permission.canUseVault(player, orderValue)) {
-                    sender.sendMessage(language.get(Lang.NO_PERMISSION));
-                    return true;
-                }
+                boolean canUseVault = permission.canUseVault(player, orderValue);
 
                 Optional<Vault> vaultOptional = registry
                         .getByMetadata(player.getUniqueId(), VaultDefaultMetadata.ORDER.getKey(), orderValue);
@@ -68,6 +65,11 @@ public class VaultCommand implements CommandExecutor {
                 if (vaultOptional.isPresent()) {
                     vault = (BukkitVault) vaultOptional.get();
                 } else {
+                    if (!canUseVault) {
+                        sender.sendMessage(language.get(Lang.NO_PERMISSION));
+                        return true;
+                    }
+
                     vault = (BukkitVault) BukkitVaultFactory.create(player.getUniqueId(), new HashMap<String, Object>(){{
                         put(VaultDefaultMetadata.ORDER.getKey(), orderValue);
                     }});
